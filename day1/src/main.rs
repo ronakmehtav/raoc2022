@@ -4,25 +4,23 @@ fn main() {
 }
 
 fn part_1() {
-    let file = std::fs::read_to_string(
-        std::env::args()
-            .nth(1)
-            .expect("file path need's to be given."),
-    );
+    let file_name = std::env::args()
+        .nth(1)
+        .expect("file path need's to be given.");
+    let file = std::fs::read_to_string(file_name);
 
     let max = file
         .expect("file path is not correct")
         .split("\n\n")
-        .map(|group| {
+        .flat_map(|group| {
             let lines = group.lines();
             let numbers = lines
-                .map(|line| line.parse::<i32>().unwrap())
-                .reduce(|acc, e| acc + e)
-                .unwrap();
+                .flat_map(|line| line.parse::<i32>())
+                .reduce(|acc, e| acc + e);
             numbers
         })
         .max()
-        .unwrap();
+        .unwrap_or(0);
 
     println!("{}", max);
 }
