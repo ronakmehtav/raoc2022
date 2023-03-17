@@ -1,35 +1,31 @@
 fn main() {
-    part_1();
-    part_2();
-}
-
-fn part_1() {
     let file_name = std::env::args()
         .nth(1)
         .expect("file path need's to be given.");
-    let file = std::fs::read_to_string(file_name);
-
-    let max = file
-        .expect("file path is not correct")
-        .split("\n\n")
-        .flat_map(|group| {
-            let lines = group.lines();
-            let numbers = lines
-                .flat_map(|line| line.parse::<i32>())
-                .reduce(|acc, e| acc + e);
-            numbers
-        })
-        .max()
-        .unwrap_or(0);
-
-    println!("{}", max);
+    part_1(&file_name);
+    part_2(&file_name);
 }
-fn part_2() {
-    let file = std::fs::read_to_string(
-        std::env::args()
-            .nth(1)
-            .expect("file path need's to be given."),
+
+// Read's the input from the file
+fn part_1(file_name: &String) {
+    println!(
+        "{}",
+        std::fs::read_to_string(file_name)
+            .expect("file path is not correct")
+            .split("\n\n")
+            .flat_map(|group| {
+                let lines = group.lines();
+                let numbers = lines
+                    .flat_map(|line| line.parse::<i32>())
+                    .reduce(|acc, e| acc + e);
+                numbers
+            })
+            .max()
+            .unwrap_or(0)
     );
+}
+fn part_2(file_name: &String) {
+    let file = std::fs::read_to_string(file_name);
 
     let mut values = file
         .expect("file path is not correct")
